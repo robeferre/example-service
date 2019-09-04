@@ -1,0 +1,25 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: springboot-backend
+  labels:
+    app: springboot-backend
+spec:
+  selector:
+    matchLabels:
+      app: springboot
+      tier: backend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: springboot
+        tier: backend
+    spec:
+      containers:
+        - image: gcr.io/devops-terraform-admin-001/springboot:v1
+          name: rusty-pangolin
+          ports:
+            - containerPort: 8080
+              name: ci-deploy
