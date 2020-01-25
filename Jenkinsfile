@@ -25,7 +25,7 @@ spec:
     command:
     - cat
     tty: true
-  - name: kubectl
+  - name: skipfish
     image: robeferre/skipfish
     command:
     - cat
