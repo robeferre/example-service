@@ -45,7 +45,7 @@ spec:
         stage('Validate') {
           steps {
              container('maven') {
-               sh 'mvn -f pom.xml validate'
+               sh 'mvn -f pom.xml compile'
              }
           }
         }
