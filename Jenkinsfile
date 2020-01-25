@@ -106,13 +106,13 @@ spec:
           }
         }
 
-        stage('Security test') {
+        stage('Curl size_download') {
           steps {
             sh 'ls'
           }
         }
 
-        stage('Integration test') {
+        stage('Curl total_time') {
           steps {
             sh 'ls'
           }
@@ -175,7 +175,7 @@ spec:
           }
         }
 
-        stage('') {
+        stage('error') {
           steps {
             sh '''ls
 '''
