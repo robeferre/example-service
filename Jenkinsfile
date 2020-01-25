@@ -47,7 +47,7 @@ spec:
         stage('Compile') {
           steps {
              container('maven') {
-               sh 'mvn -f pom.xml compile'
+               sh 'mvn -f pom.xml clean package'
              }
           }
         }
@@ -61,7 +61,7 @@ spec:
         stage('Sonar scan') {
           steps {
             container('maven') {
-              sh 'mvn -f pom.xml compile && mvn sonar:sonar \
+              sh 'mvn -f pom.xml clean package && mvn sonar:sonar \
                     -Dsonar.projectKey=example-service \
                     -Dsonar.host.url=http://a650a5d463f5311eaa40d0a8f421d27b-448420350.us-east-1.elb.amazonaws.com:8080 \
                     -Dsonar.login=dea0388bc4334e2cb00be05538a081bd05a7293d'
