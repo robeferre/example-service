@@ -25,6 +25,11 @@ spec:
     command:
     - cat
     tty: true
+  - name: kubectl
+    image: robeferre/skipfish
+    command:
+    - cat
+    tty: true
   volumes:
   - name: jenkins-docker-cfg
     projected:
@@ -165,12 +170,14 @@ spec:
 
         stage('Security Tests') {
           steps {
-            sh 'ls'
+            container(name: 'skipfish') {
+            sh 'skipfish -o output-`date +"%m-%d-%Y-%H:%M:%S"` http://a84bb27bc3f8d11eaa40d0a8f421d27b-1231905860.us-east-1.elb.amazonaws.com:8080/ && \
+                aws s3 cp output/ s3://skipfish/output-`date +"%m-%d-%Y-%H:%M:%S"` --recursive'
           }
         }
-
       }
-    }
+
+
 
     stage('Go for Production?') {
       steps {
