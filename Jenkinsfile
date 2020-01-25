@@ -71,7 +71,7 @@ spec:
     stage('Push to registry') {
       steps {
         sh 'env'
-        sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=robeferre/golang-sample'
+        sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=robeferre/golang-sample:${GIT_COMMIT}'
       }
     }
 
