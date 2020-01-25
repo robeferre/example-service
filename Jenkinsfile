@@ -168,17 +168,23 @@ spec:
 
     stage('Production tests') {
       parallel {
-        stage('Production tests') {
+        stage('Curl http_code') {
           steps {
             sh '''ls
 '''
           }
         }
 
-        stage('error') {
+        stage('Curl size_download') {
           steps {
             sh '''ls
 '''
+          }
+        }
+
+        stage('Curl total_time') {
+          steps {
+            sh 'ls'
           }
         }
 
