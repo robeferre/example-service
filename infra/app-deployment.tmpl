@@ -23,3 +23,6 @@ spec:
           ports:
             - containerPort: 8080
               name: ci-deploy
+          env:
+            - name: ENV
+              value: ${ENV}

@@ -8,7 +8,7 @@ public class HelloController {
 
     @RequestMapping("/")
     public String index() {
-        return "hi asdsadas!";
+        String envData = System.getenv("ENV");
+        return ("Hi you are on %s environment!",envData);
     }
-
 }
