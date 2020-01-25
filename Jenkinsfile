@@ -79,7 +79,7 @@ spec:
     stage('Deploy Dev') {
       steps {
         container('kubectl') {
-          sh 'env'
+          sh 'aws sts get-caller-identity'
         }
       }
     }
