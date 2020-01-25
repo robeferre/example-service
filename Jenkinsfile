@@ -47,7 +47,7 @@ spec:
         stage('Compile') {
           steps {
              container('maven') {
-               sh 'mvn -f pom.xml clean package'
+               sh 'mvn install && mvn -f pom.xml clean package'
              }
           }
         }
@@ -93,8 +93,8 @@ spec:
               export ENV=dev && \
               aws eks --region us-east-1 update-kubeconfig --name emirates-dev-k8s-cluster && \
               apk add gettext && \
-              envsubst < app-deployment.tmpl > app-deployment.yaml && \
-              envsubst < app-service.tmpl > app-service.yaml && \
+              envsubst < infra\\app-deployment.tmpl > infra\\app-deployment.yaml && \
+              envsubst < infra\\app-service.tmpl > infra\\app-service.yaml && \
               kubectl apply -f infra/ -n development'
         }
       }
