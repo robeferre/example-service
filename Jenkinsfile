@@ -20,11 +20,6 @@ spec:
     command:
     - cat
     tty: true
-  - name: sonar-scanner
-    image: emeraldsquad/sonar-scanner
-    command:
-    - cat
-    tty: true
   volumes:
   - name: jenkins-docker-cfg
     projected:
@@ -70,14 +65,17 @@ spec:
 
     stage('Push to registry') {
       steps {
-        sh 'env'
-        sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=robeferre/golang-sample:${GIT_COMMIT}'
+         container('kaniko') {
+           sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=robeferre/example-service:${GIT_COMMIT}'
+         }
       }
     }
 
     stage('Deploy Dev') {
       steps {
-        sh 'ls'
+        container('jnlp') {
+          sh 'kubectl get nodes'
+        }
       }
     }
 
