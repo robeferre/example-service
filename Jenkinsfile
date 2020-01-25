@@ -40,7 +40,6 @@ spec:
   }
   stages {
     stage('Build') {
-
       parallel {
         stage('Validate') {
           steps {
@@ -49,7 +48,6 @@ spec:
              }
           }
         }
-
         stage('Unit tests') {
           steps {
             container('maven') {
@@ -57,7 +55,6 @@ spec:
             }
           }
         }
-
         stage('Sonar scan') {
           steps {
             container('maven') {
@@ -68,12 +65,12 @@ spec:
              }
            }
          }
-
       }
     }
 
     stage('Push to registry') {
       steps {
+        sh 'env'
         sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=robeferre/golang-sample'
       }
     }
