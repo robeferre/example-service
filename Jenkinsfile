@@ -131,9 +131,21 @@ spec:
     }
 
     stage('Deploy to Staging') {
-      steps {
-        sh 'ls'
+      when {
+        branch 'feature*'
       }
+      steps {
+        container(name: 'kubectl') {
+          sh 'export PATH=${PATH}:/root/.local/bin && \
+              export ENV=stg && \
+              aws eks --region us-east-1 update-kubeconfig --name emirates-dev-k8s-cluster && \
+              apk add gettext && \
+              envsubst < infra/app-deployment.tmpl > infra/app-deployment.yaml && \
+              envsubst < infra/app-service.tmpl > infra/app-service.yaml && \
+              kubectl apply -f infra/ -n staging --wait'
+        }
+      }
+    }
     }
 
     stage('Staging tests') {
