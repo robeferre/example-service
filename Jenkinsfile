@@ -79,7 +79,9 @@ spec:
     stage('Deploy Dev') {
       steps {
         container('kubectl') {
-          sh 'aws sts get-caller-identity'
+          sh 'export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.local/bin'
+          sh 'aws eks --region us-east-1 update-kubeconfig --name emirates-dev-k8s-cluster'
+          sh 'kubectl get pods'
         }
       }
     }
