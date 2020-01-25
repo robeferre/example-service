@@ -129,12 +129,11 @@ spec:
           steps {
             container(name: 'kubectl') {
             sh '(cd infra; curl -L -w "@curl-format.txt" -o /dev/null -s \"http://a84bb27bc3f8d11eaa40d0a8f421d27b-1231905860.us-east-1.elb.amazonaws.com:8080\";)'
-          }
-        }
-      }
+           }
+         }
+       }
+     }
     }
-  }
-
 
     stage('Deploy to Staging') {
       when {
@@ -155,29 +154,29 @@ spec:
 
     stage('Staging tests') {
       parallel {
-        stage('Integration tests') {
-          steps {
-            sh 'echo need a test here'
+          stage('Integration tests') {
+            steps {
+              sh 'echo need a test here'
+            }
           }
-        }
 
-        stage('Load Tests') {
-          steps {
-            sh 'ls'
+          stage('Load Tests') {
+            steps {
+              sh 'ls'
 
+            }
           }
-        }
 
-        stage('Security Tests') {
-          steps {
-            container(name: 'skipfish') {
-            sh 'skipfish -o output-`date +"%m-%d-%Y-%H:%M:%S"` http://a84bb27bc3f8d11eaa40d0a8f421d27b-1231905860.us-east-1.elb.amazonaws.com:8080/ && \
-                aws s3 cp output/ s3://skipfish/output-`date +"%m-%d-%Y-%H:%M:%S"` --recursive'
+          stage('Security Tests') {
+            steps {
+              container(name: 'skipfish') {
+              sh 'skipfish -o output-`date +"%m-%d-%Y-%H:%M:%S"` http://a84bb27bc3f8d11eaa40d0a8f421d27b-1231905860.us-east-1.elb.amazonaws.com:8080/ && \
+                  aws s3 cp output/ s3://skipfish/output-`date +"%m-%d-%Y-%H:%M:%S"` --recursive'
+              }
+            }
           }
-        }
-      }
-
-
+       }
+    }
 
     stage('Go for Production?') {
       steps {
