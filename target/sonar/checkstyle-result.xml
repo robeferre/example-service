@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="8.27">
+<file name="/home/robeferre/Workspace/example-service/src/main/java/hello/Application.java">
+</file>
+<file name="/home/robeferre/Workspace/example-service/src/main/java/hello/HelloController.java">
+</file>
+</checkstyle>
