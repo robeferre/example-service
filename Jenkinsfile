@@ -40,6 +40,9 @@ spec:
   }
   stages {
     stage('Build') {
+      when {
+                branch 'feature*'
+            }
       parallel {
         stage('Validate') {
           steps {
@@ -69,19 +72,29 @@ spec:
     }
 
     stage('Push to registry') {
+      when {
+                branch 'feature*'
+            }
       steps {
          container('kaniko') {
-           sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=robeferre/example-service:${GIT_COMMIT}'
+           sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify \
+                  --cache=true --destination=robeferre/example-service:${GIT_COMMIT}'
          }
       }
     }
 
     stage('Deploy Dev') {
+      when {
+                branch 'feature*'
+            }
       steps {
         container('kubectl') {
-          sh 'export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.local/bin && \
+          sh 'export PATH=${PATH}:/root/.local/bin && \
+              export ENV=dev && \
               aws eks --region us-east-1 update-kubeconfig --name emirates-dev-k8s-cluster && \
-              pwd && ls'
+              envsubst < app-deployment.tmpl > app-deployment.yaml && \
+              envsubst < app-service.tmpl > app-service.yaml &&
+              kubectl apply -f infra/ -n development'
         }
       }
     }

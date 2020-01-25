@@ -18,8 +18,8 @@ spec:
         tier: backend
     spec:
       containers:
-        - image: gcr.io/devops-terraform-admin-001/springboot:v1
-          name: rusty-pangolin
+        - image: robeferre/example-service:${GIT_COMMIT}
+          name: example-service
           ports:
             - containerPort: 8080
               name: ci-deploy
