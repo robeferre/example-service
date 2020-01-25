@@ -20,6 +20,11 @@ spec:
     command:
     - cat
     tty: true
+  - name: sonar-scanner
+    image: emeraldsquad/sonar-scanner
+    command:
+    - cat
+    tty: true
   volumes:
   - name: jenkins-docker-cfg
     projected:
@@ -55,9 +60,14 @@ spec:
 
         stage('Sonar scan') {
           steps {
-            sh 'ls'
-          }
-        }
+            container('maven') {
+              sh 'mvn sonar:sonar \
+                    -Dsonar.projectKey=example-service \
+                    -Dsonar.host.url=http://a650a5d463f5311eaa40d0a8f421d27b-448420350.us-east-1.elb.amazonaws.com:8080 \
+                    -Dsonar.login=dea0388bc4334e2cb00be05538a081bd05a7293d'
+             }
+           }
+         }
 
       }
     }
