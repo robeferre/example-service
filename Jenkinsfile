@@ -16,7 +16,7 @@ spec:
       - name: jenkins-docker-cfg
         mountPath: /kaniko/.docker
   - name: maven
-    image: robeferre/mvn-alpine
+    image: robeferre/maven-alpine
     command:
     - cat
     tty: true
