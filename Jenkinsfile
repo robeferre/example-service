@@ -58,19 +58,19 @@ spec:
             container(name: 'maven') {
               sh 'mvn -f pom.xml test'
             }
-
           }
         }
 
         stage('Sonar scan') {
           steps {
             container(name: 'maven') {
-              sh 'mvn -f pom.xml compile && mvn sonar:sonar                     -Dsonar.projectKey=example-service                     -Dsonar.host.url=http://a650a5d463f5311eaa40d0a8f421d27b-448420350.us-east-1.elb.amazonaws.com:8080                     -Dsonar.login=dea0388bc4334e2cb00be05538a081bd05a7293d'
+              sh 'mvn -f pom.xml compile && mvn sonar:sonar \
+                         -Dsonar.projectKey=example-service \
+                         -Dsonar.host.url=http://a650a5d463f5311eaa40d0a8f421d27b-448420350.us-east-1.elb.amazonaws.com:8080 \
+                         -Dsonar.login=dea0388bc4334e2cb00be05538a081bd05a7293d'
             }
-
           }
         }
-
       }
     }
 
@@ -80,7 +80,8 @@ spec:
       }
       steps {
         container(name: 'kaniko') {
-          sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify                   --cache=true --destination=robeferre/example-service:${GIT_COMMIT}'
+          sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify \
+                                  --cache=true --destination=robeferre/example-service:${GIT_COMMIT}'
         }
 
       }
@@ -92,9 +93,14 @@ spec:
       }
       steps {
         container(name: 'kubectl') {
-          sh 'export PATH=${PATH}:/root/.local/bin &&               export ENV=dev &&               aws eks --region us-east-1 update-kubeconfig --name emirates-dev-k8s-cluster &&               apk add gettext &&               envsubst < infra/app-deployment.tmpl > infra/app-deployment.yaml &&               envsubst < infra/app-service.tmpl > infra/app-service.yaml &&               kubectl apply -f infra/ -n development'
+          sh 'export PATH=${PATH}:/root/.local/bin && \
+              export ENV=dev && \
+              aws eks --region us-east-1 update-kubeconfig --name emirates-dev-k8s-cluster && \
+              apk add gettext && \
+              envsubst < infra/app-deployment.tmpl > infra/app-deployment.yaml && \
+              envsubst < infra/app-service.tmpl > infra/app-service.yaml && \
+              kubectl apply -f infra/ -n development'
         }
-
       }
     }
 
