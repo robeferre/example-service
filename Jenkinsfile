@@ -80,7 +80,8 @@ spec:
       steps {
         container('kubectl') {
           sh 'export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.local/bin && \
-              aws eks --region us-east-1 update-kubeconfig --name emirates-dev-k8s-cluster'
+              aws eks --region us-east-1 update-kubeconfig --name emirates-dev-k8s-cluster && \
+              pwd && ls'
         }
       }
     }
