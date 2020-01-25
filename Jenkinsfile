@@ -108,19 +108,19 @@ spec:
       parallel {
         stage('Curl http_code') {
           steps {
-            sh 'ls'
+            sh 'curl --silent --fail "http://a84bb27bc3f8d11eaa40d0a8f421d27b-1231905860.us-east-1.elb.amazonaws.com:8080/"'
           }
         }
 
         stage('Curl size_download') {
           steps {
-            sh 'ls'
+            sh 'curl -so /dev/null "http://a84bb27bc3f8d11eaa40d0a8f421d27b-1231905860.us-east-1.elb.amazonaws.com:8080/" -w \'%{size_download}\''
           }
         }
 
         stage('Curl total_time') {
           steps {
-            sh 'ls'
+            sh '(cd infra; curl -w "@curl-format.txt" -o /dev/null -s "http://a84bb27bc3f8d11eaa40d0a8f421d27b-1231905860.us-east-1.elb.amazonaws.com:8080/")'
           }
         }
 
