@@ -15,6 +15,11 @@ spec:
     volumeMounts:
       - name: jenkins-docker-cfg
         mountPath: /kaniko/.docker
+  - name: maven
+    image: maven:alpine
+    command:
+    - cat
+    tty: true
   volumes:
   - name: jenkins-docker-cfg
     projected:
@@ -30,16 +35,21 @@ spec:
   }
   stages {
     stage('Build') {
+
       parallel {
-        stage('Build') {
+        stage('Validate') {
           steps {
-            sh 'ls'
+             container('maven') {
+               sh 'mvn -f pom.xml validate'
+             }
           }
         }
 
         stage('Unit tests') {
           steps {
-            sh 'ls'
+            container('maven') {
+              sh 'mvn -f pom.xml test'
+            }
           }
         }
 
