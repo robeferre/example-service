@@ -137,15 +137,14 @@ spec:
 
         stage('Load Tests') {
           steps {
-            sh '''ls
-'''
+            sh 'ls'
+
           }
         }
 
         stage('Security Tests') {
           steps {
-            sh '''ls
-'''
+            sh 'ls'
           }
         }
 
@@ -154,15 +153,13 @@ spec:
 
     stage('Go for Production?') {
       steps {
-        sh '''ls
-'''
+        sh 'ls'
       }
     }
 
     stage('Deploy Production') {
       steps {
-        sh '''ls
-'''
+        sh 'ls'
       }
     }
 
@@ -170,15 +167,13 @@ spec:
       parallel {
         stage('Curl http_code') {
           steps {
-            sh '''ls
-'''
+            sh 'ls'
           }
         }
 
         stage('Curl size_download') {
           steps {
-            sh '''ls
-'''
+            sh 'ls'
           }
         }
 
