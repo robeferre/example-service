@@ -124,11 +124,12 @@ spec:
           steps {
             container(name: 'kubectl') {
             sh '(cd infra; curl -L -w "@curl-format.txt" -o /dev/null -s \"http://a84bb27bc3f8d11eaa40d0a8f421d27b-1231905860.us-east-1.elb.amazonaws.com:8080\";)'
-          }}
+          }
         }
-
       }
     }
+  }
+
 
     stage('Deploy to Staging') {
       when {
@@ -142,17 +143,16 @@ spec:
               apk add gettext && \
               envsubst < infra/app-deployment.tmpl > infra/app-deployment.yaml && \
               envsubst < infra/app-service.tmpl > infra/app-service.yaml && \
-              kubectl apply -f infra/ -n staging --wait'
+              kubectl apply -f infra/ -n staging'
         }
       }
-    }
     }
 
     stage('Staging tests') {
       parallel {
         stage('Integration tests') {
           steps {
-            sh 'cat'
+            sh 'echo need a test here'
           }
         }
 
