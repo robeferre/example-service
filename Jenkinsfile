@@ -93,7 +93,7 @@ spec:
               export ENV=dev && \
               aws eks --region us-east-1 update-kubeconfig --name emirates-dev-k8s-cluster && \
               envsubst < app-deployment.tmpl > app-deployment.yaml && \
-              envsubst < app-service.tmpl > app-service.yaml &&
+              envsubst < app-service.tmpl > app-service.yaml && \
               kubectl apply -f infra/ -n development'
         }
       }
