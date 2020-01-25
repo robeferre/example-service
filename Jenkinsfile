@@ -20,6 +20,11 @@ spec:
     command:
     - cat
     tty: true
+  - name: kubectl
+    image: robeferre/kubectl
+    command:
+    - cat
+    tty: true
   volumes:
   - name: jenkins-docker-cfg
     projected:
@@ -73,8 +78,8 @@ spec:
 
     stage('Deploy Dev') {
       steps {
-        container('jnlp') {
-          sh 'kubectl get nodes'
+        container('kubectl') {
+          sh 'env'
         }
       }
     }
