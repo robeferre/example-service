@@ -139,7 +139,7 @@ spec:
           }
           steps {
             container(name: 'alpine') {
-            sh '(cd infra; curl -w "@curl-format.txt" -o /dev/null -s \"http://a01460d9e405811eaa3570ec99ad6800-1515135732.us-east-1.elb.amazonaws.com:8080\";)'
+            sh '(cd infra; curl -w "@curl-format.txt" -o /dev/null -s \"http://a01460d9e405811eaa3570ec99ad6800-1515135732.us-east-1.elb.amazonaws.com:\";)'
            }
          }
        }
@@ -166,6 +166,9 @@ spec:
     }
 
     stage('Staging tests') {
+      when {
+        branch 'feature*'
+      }
       parallel {
           stage('Integration tests') {
             steps {
@@ -195,6 +198,9 @@ spec:
     }
 
     stage('Go for Production?') {
+      when {
+                branch 'master'
+            }
       steps {
         timeout(time: 40, unit: "MINUTES") {
             input message: 'Do you want to approve the deploy in production?', ok: 'Yes'
@@ -203,12 +209,18 @@ spec:
     }
 
     stage('Deploy Production') {
+      when {
+                branch 'master'
+            }
       steps {
         sh 'ls'
       }
     }
 
     stage('Production tests') {
+      when {
+                branch 'master'
+            }
       parallel {
         stage('Curl http_code') {
           steps {
