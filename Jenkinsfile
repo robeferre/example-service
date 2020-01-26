@@ -207,14 +207,14 @@ spec:
     }
 
 
-    stage('Deploy Production') {
+    stage('Deploy to Production') {
       when {
                 branch 'master'
             }
       steps {
         container(name: 'alpine') {
           sh 'export PATH=${PATH}:/root/.local/bin && \
-              export ENV=prod && export GIT_COMMIT=latest\
+              export ENV=prod && export GIT_COMMIT=latest && \
               aws eks --region us-east-1 update-kubeconfig --name emirates-dev-k8s-cluster && \
               apk add gettext && \
               envsubst < infra/app-deployment.tmpl > infra/app-deployment.yaml && \
