@@ -110,7 +110,7 @@ spec:
     }
 
     stage('Dev Tests') {
-      parallel {s
+      parallel {
         stage('Curl http_code') {
           steps {
             container(name: 'kubectl') {
