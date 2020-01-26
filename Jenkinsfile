@@ -221,7 +221,7 @@ spec:
               envsubst < infra/app-deployment.tmpl > infra/app-deployment.yaml && \
               envsubst < infra/app-service.tmpl > infra/app-service.yaml && \
               kubectl apply -f infra/ -n production && \
-              kubectl rollout status deployment springboot-backend -n staging && \
+              kubectl rollout status deployment springboot-backend -n production && \
               sleep 20'
         }
       }
