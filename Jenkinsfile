@@ -139,7 +139,7 @@ spec:
           }
           steps {
             container(name: 'alpine') {
-            sh '(cd infra; curl -w "@curl-format.txt" -o /dev/null -s \"http://a01460d9e405811eaa3570ec99ad6800-1515135732.us-east-1.elb.amazonaws.com:\";)'
+            sh '(cd infra; curl -w "@curl-format.txt" -o /dev/null -s \"http://a01460d9e405811eaa3570ec99ad6800-1515135732.us-east-1.elb.amazonaws.com:8080\";)'
            }
          }
        }
