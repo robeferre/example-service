@@ -196,7 +196,7 @@ spec:
 
     stage('Publish Docker:latest') {
       when {
-        branch 'feature*'
+                branch 'master'
       }
       steps {
         container(name: 'kaniko') {
