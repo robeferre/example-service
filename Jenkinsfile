@@ -71,7 +71,7 @@ spec:
             container(name: 'maven') {
               sh 'mvn -f pom.xml compile && mvn sonar:sonar \
                          -Dsonar.projectKey=example-service \
-                         -Dsonar.host.url=http://a650a5d463f5311eaa40d0a8f421d27b-448420350.us-east-1.elb.amazonaws.com:8080 \
+                         -Dsonar.host.url=http://sonar.robeferre.com:8080 \
                          -Dsonar.login=dea0388bc4334e2cb00be05538a081bd05a7293d'
             }
           }
@@ -120,7 +120,7 @@ spec:
 
           steps {
             container(name: 'alpine') {
-            sh '(curl -so /dev/null --fail \"http://a01460d9e405811eaa3570ec99ad6800-1515135732.us-east-1.elb.amazonaws.com:8080\";)'
+            sh '(curl -so /dev/null --fail \"http://app-dev.robeferre.com:8080\";)'
           }}
         }
 
@@ -128,7 +128,7 @@ spec:
 
           steps {
               container(name: 'alpine') {
-            sh '(curl -so /dev/null --fail \"http://a01460d9e405811eaa3570ec99ad6800-1515135732.us-east-1.elb.amazonaws.com:8080\" -w \'%{size_download}\';)'
+            sh '(curl -so /dev/null --fail \"http://app-dev.robeferre.com:8080\" -w \'%{size_download}\';)'
           }}
         }
 
@@ -136,7 +136,7 @@ spec:
 
           steps {
             container(name: 'alpine') {
-            sh '(cd infra; curl -w "@curl-format.txt" -o /dev/null -s \"http://a01460d9e405811eaa3570ec99ad6800-1515135732.us-east-1.elb.amazonaws.com:8080\";)'
+            sh '(cd infra; curl -w "@curl-format.txt" -o /dev/null -s \"http://app-dev.robeferre.com:8080\";)'
            }
          }
        }
@@ -186,7 +186,7 @@ spec:
           stage('Security Tests') {
             steps {
               container(name: 'skipfish') {
-              sh 'skipfish -o output http://a84bb27bc3f8d11eaa40d0a8f421d27b-1231905860.us-east-1.elb.amazonaws.com:8080/ && \
+              sh 'skipfish -o output http://app-stg.robeferre.com:8080 && \
                   aws s3 cp output/ s3://skipfish/output-`date +"%m-%d-%Y-%H:%M:%S"` --recursive'
               }
             }
@@ -228,28 +228,34 @@ spec:
 
     stage('Production tests') {
       when {
-                branch 'master'
-            }
+        branch 'master'
+      }
       parallel {
         stage('Curl http_code') {
+
           steps {
-            sh 'ls'
-          }
+            container(name: 'alpine') {
+            sh '(curl -so /dev/null --fail \"http://app-prod.robeferre.com:8080\";)'
+          }}
         }
 
         stage('Curl size_download') {
+
           steps {
-            sh 'ls'
-          }
+              container(name: 'alpine') {
+            sh '(curl -so /dev/null --fail \"http://app-prod.robeferre.com:8080\" -w \'%{size_download}\';)'
+          }}
         }
 
         stage('Curl total_time') {
-          steps {
-            sh 'ls'
-          }
-        }
 
-      }
+          steps {
+            container(name: 'alpine') {
+            sh '(cd infra; curl -w "@curl-format.txt" -o /dev/null -s \"http://app-prod.robeferre.com:8080\";)'
+           }
+         }
+       }
+     }
     }
 
   }
