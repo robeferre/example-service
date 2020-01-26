@@ -97,7 +97,7 @@ spec:
         branch 'feature*'
       }
       steps {
-        container(name: 'kubectl') {
+        container(name: 'alpine') {
           sh 'export PATH=${PATH}:/root/.local/bin && \
               export ENV=dev && \
               aws eks --region us-east-1 update-kubeconfig --name emirates-dev-k8s-cluster && \
@@ -115,21 +115,21 @@ spec:
       parallel {
         stage('Curl http_code') {
           steps {
-            container(name: 'kubectl') {
+            container(name: 'alpine') {
             sh '(curl -so /dev/null --fail \"http://a84bb27bc3f8d11eaa40d0a8f421d27b-1231905860.us-east-1.elb.amazonaws.com:8080\";)'
           }}
         }
 
         stage('Curl size_download') {
           steps {
-              container(name: 'kubectl') {
+              container(name: 'alpine') {
             sh '(curl -so /dev/null --fail \"http://a84bb27bc3f8d11eaa40d0a8f421d27b-1231905860.us-east-1.elb.amazonaws.com:8080\" -w \'%{size_download}\';)'
           }}
         }
 
         stage('Curl total_time') {
           steps {
-            container(name: 'kubectl') {
+            container(name: 'alpine') {
             sh '(cd infra; curl -w "@curl-format.txt" -o /dev/null -s \"http://a84bb27bc3f8d11eaa40d0a8f421d27b-1231905860.us-east-1.elb.amazonaws.com:8080\";)'
            }
          }
@@ -142,7 +142,7 @@ spec:
         branch 'feature*'
       }
       steps {
-        container(name: 'kubectl') {
+        container(name: 'alpine') {
           sh 'export PATH=${PATH}:/root/.local/bin && \
               export ENV=stg && \
               aws eks --region us-east-1 update-kubeconfig --name emirates-dev-k8s-cluster && \
@@ -164,7 +164,7 @@ spec:
 
           stage('Load Tests') {
             steps {
-              container(name: 'kubectl') {
+              container(name: 'alpine') {
               sh '(cd infra; ./start_test.sh jmeter performance_test.jmx;)'
               }
             }
