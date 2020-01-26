@@ -4,7 +4,7 @@ metadata:
   name: springboot-service
   labels:
     app: springboot
-    environment: dev
+    environment: ${ENV}
     tier: backend
 spec:
   ports:
@@ -12,4 +12,5 @@ spec:
   selector:
     app: springboot
     tier: backend
+    environment: ${ENV}
   type: LoadBalancer

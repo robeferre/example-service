@@ -9,6 +9,6 @@ public class HelloController {
     @RequestMapping("/")
     public String index() {
         String envData = System.getenv("ENV");
-        return String.format("Hi you are on %s environment!",envData);
+        return String.format("{\"healthcheck\": \"true\", \"env\": \"%s\"}",envData);
     }
 }
