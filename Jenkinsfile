@@ -110,7 +110,7 @@ spec:
     }
 
     stage('Dev Tests') {
-      parallel {
+      parallel {s
         stage('Curl http_code') {
           steps {
             container(name: 'kubectl') {
@@ -162,8 +162,9 @@ spec:
 
           stage('Load Tests') {
             steps {
-              sh 'ls'
-
+              container(name: 'kubectl') {
+              sh '(cd infra; ./start_test.sh jmeter performance_test.jmx;)'
+              }
             }
           }
 

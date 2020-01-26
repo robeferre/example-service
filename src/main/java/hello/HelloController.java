@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RestController
 public class HelloController {
 
+    @ResponseStatus(HttpStatus.OK)
     @RequestMapping("/")
     public String index() {
         String envData = System.getenv("ENV");
