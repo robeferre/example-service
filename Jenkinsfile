@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      defaultContainer 'kaniko'
+      //cloud 'kubernetes'
       yaml '''
 kind: Pod
 spec:
@@ -106,7 +106,7 @@ spec:
               envsubst < infra/app-service.tmpl > infra/app-service.yaml && \
               kubectl apply -f infra/ -n development && \
               kubectl rollout status deployment springboot-backend -n development && \
-              sleep 10'
+              sleep 20'
         }
       }
     }
@@ -114,6 +114,9 @@ spec:
     stage('Dev Tests') {
       parallel {
         stage('Curl http_code') {
+          when {
+            branch 'feature*'
+          }
           steps {
             container(name: 'alpine') {
             sh '(curl -so /dev/null --fail \"http://a84bb27bc3f8d11eaa40d0a8f421d27b-1231905860.us-east-1.elb.amazonaws.com:8080\";)'
@@ -121,6 +124,9 @@ spec:
         }
 
         stage('Curl size_download') {
+          when {
+            branch 'feature*'
+          }
           steps {
               container(name: 'alpine') {
             sh '(curl -so /dev/null --fail \"http://a84bb27bc3f8d11eaa40d0a8f421d27b-1231905860.us-east-1.elb.amazonaws.com:8080\" -w \'%{size_download}\';)'
@@ -128,6 +134,9 @@ spec:
         }
 
         stage('Curl total_time') {
+          when {
+            branch 'feature*'
+          }
           steps {
             container(name: 'alpine') {
             sh '(cd infra; curl -w "@curl-format.txt" -o /dev/null -s \"http://a84bb27bc3f8d11eaa40d0a8f421d27b-1231905860.us-east-1.elb.amazonaws.com:8080\";)'
@@ -149,7 +158,9 @@ spec:
               apk add gettext && \
               envsubst < infra/app-deployment.tmpl > infra/app-deployment.yaml && \
               envsubst < infra/app-service.tmpl > infra/app-service.yaml && \
-              kubectl apply -f infra/ -n staging'
+              kubectl apply -f infra/ -n staging && \
+              kubectl rollout status deployment springboot-backend -n staging && \
+              sleep 20'
         }
       }
     }
@@ -185,7 +196,9 @@ spec:
 
     stage('Go for Production?') {
       steps {
-        sh 'ls'
+        timeout(time: 40, unit: "MINUTES") {
+            input message: 'Do you want to approve the deploy in production?', ok: 'Yes'
+        }
       }
     }
 
