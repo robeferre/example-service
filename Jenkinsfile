@@ -194,19 +194,7 @@ spec:
        }
     }
 
-    stage('Go for Production?') {
-      when {
-                branch 'master'
-            }
-      steps {
-        timeout(time: 40, unit: "MINUTES") {
-            input message: 'Do you want to approve the deploy in production?', ok: 'Yes'
-        }
-      }
-    }
-
-
-    stage('Publish Docker') {
+    stage('Publish Docker:latest') {
       when {
         branch 'feature*'
       }
