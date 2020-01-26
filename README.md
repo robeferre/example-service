@@ -2,9 +2,9 @@
 
 ## Architecture: 
 
-   The approach that I used for the infrastructure is scale Jenkins agents on EKS using the Kubernetes plugin for Jenkins, the infrascructure is similar as the picture below, im just not doing canary deploymoyments for a while. A good way to watch what is happening behind the scenes in trigger a Jenkins pipeline and watch the pipeline dash and containers being created here (http://kubeops.robeferre.com/). Im executing curl tests, performance tests and security tests.
+   Hi, the approach that I used for the infrastructure is scale Jenkins agents on EKS using the Kubernetes plugin for Jenkins, the infrascructure is similar as the picture below, im just not doing canary deploymoyments for a while. A good way to watch what is happening behind the scenes in trigger a Jenkins pipeline and watch the pipeline dash and containers being created here (http://kubeops.robeferre.com/). Im executing curl tests, performance tests and security tests.
    
-   All terraform code used to provision the cluster is in ./infra folder and the Pipeline specification in on Jenkins file, I coded the pipeline using declarative language. The infrastructure is deployed on a EKS cluser of 3 nodes **t2.medium**. There we have jmeter pods, jenkins master and agents, prometheus, **sonar needs 2GB ran to boot the pod** and the application itself, all isolated by namespaces.
+   All terraform code used to provision the cluster is in ./infra folder and the Pipeline specification in on Jenkins file, I coded the pipeline using declarative language. The infrastructure is deployed on a EKS cluser of 3 nodes **t2.medium**. There we have jmeter pods, jenkins master and agents, prometheus, **sonar needs 2GB ran to boot the pod** and the application itself, all isolated by namespaces. I hope you like it.
 
 ![alt text](https://cloud.google.com/solutions/images/jenkins-cd-container-engine.svg)
 
