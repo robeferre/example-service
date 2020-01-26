@@ -165,7 +165,9 @@ spec:
           stage('Load Tests') {
             steps {
               container(name: 'alpine') {
-              sh '(cd infra; ./start_test.sh jmeter performance_test.jmx;)'
+              sh 'export PATH=${PATH}:/root/.local/bin && \
+                  aws eks --region us-east-1 update-kubeconfig --name emirates-dev-k8s-cluster && \
+                  (cd infra; ./start_test.sh jmeter performance_test.jmx;)'
               }
             }
           }
