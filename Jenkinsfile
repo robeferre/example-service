@@ -112,11 +112,12 @@ spec:
     }
 
     stage('Dev Tests') {
+      when {
+        branch 'feature*'
+      }
       parallel {
         stage('Curl http_code') {
-          when {
-            branch 'feature*'
-          }
+
           steps {
             container(name: 'alpine') {
             sh '(curl -so /dev/null --fail \"http://a01460d9e405811eaa3570ec99ad6800-1515135732.us-east-1.elb.amazonaws.com:8080\";)'
@@ -124,9 +125,7 @@ spec:
         }
 
         stage('Curl size_download') {
-          when {
-            branch 'feature*'
-          }
+
           steps {
               container(name: 'alpine') {
             sh '(curl -so /dev/null --fail \"http://a01460d9e405811eaa3570ec99ad6800-1515135732.us-east-1.elb.amazonaws.com:8080\" -w \'%{size_download}\';)'
@@ -134,9 +133,7 @@ spec:
         }
 
         stage('Curl total_time') {
-          when {
-            branch 'feature*'
-          }
+
           steps {
             container(name: 'alpine') {
             sh '(cd infra; curl -w "@curl-format.txt" -o /dev/null -s \"http://a01460d9e405811eaa3570ec99ad6800-1515135732.us-east-1.elb.amazonaws.com:8080\";)'
@@ -208,6 +205,20 @@ spec:
       }
     }
 
+
+    stage('Publish Docker') {
+      when {
+        branch 'feature*'
+      }
+      steps {
+        container(name: 'kaniko') {
+          sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify \
+                                  --cache=true --destination=robeferre/example-service:latest'
+        }
+      }
+    }
+
+
     stage('Deploy Production') {
       when {
                 branch 'master'
@@ -215,7 +226,7 @@ spec:
       steps {
         container(name: 'alpine') {
           sh 'export PATH=${PATH}:/root/.local/bin && \
-              export ENV=prod && \
+              export ENV=prod && export GIT_COMMIT=latest\
               aws eks --region us-east-1 update-kubeconfig --name emirates-dev-k8s-cluster && \
               apk add gettext && \
               envsubst < infra/app-deployment.tmpl > infra/app-deployment.yaml && \
