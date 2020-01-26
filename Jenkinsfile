@@ -119,7 +119,7 @@ spec:
           }
           steps {
             container(name: 'alpine') {
-            sh '(curl -so /dev/null --fail \"http://a84bb27bc3f8d11eaa40d0a8f421d27b-1231905860.us-east-1.elb.amazonaws.com:8080\";)'
+            sh '(curl -so /dev/null --fail \"http://a01460d9e405811eaa3570ec99ad6800-1515135732.us-east-1.elb.amazonaws.com:8080\";)'
           }}
         }
 
@@ -129,7 +129,7 @@ spec:
           }
           steps {
               container(name: 'alpine') {
-            sh '(curl -so /dev/null --fail \"http://a84bb27bc3f8d11eaa40d0a8f421d27b-1231905860.us-east-1.elb.amazonaws.com:8080\" -w \'%{size_download}\';)'
+            sh '(curl -so /dev/null --fail \"http://a01460d9e405811eaa3570ec99ad6800-1515135732.us-east-1.elb.amazonaws.com:8080\" -w \'%{size_download}\';)'
           }}
         }
 
@@ -139,7 +139,7 @@ spec:
           }
           steps {
             container(name: 'alpine') {
-            sh '(cd infra; curl -w "@curl-format.txt" -o /dev/null -s \"http://a84bb27bc3f8d11eaa40d0a8f421d27b-1231905860.us-east-1.elb.amazonaws.com:8080\";)'
+            sh '(cd infra; curl -w "@curl-format.txt" -o /dev/null -s \"http://a01460d9e405811eaa3570ec99ad6800-1515135732.us-east-1.elb.amazonaws.com:8080\";)'
            }
          }
        }
