@@ -20,8 +20,8 @@ spec:
     command:
     - cat
     tty: true
-  - name: kubectl
-    image: robeferre/kubectl
+  - name: alpine
+    image: robeferre/alpine
     command:
     - cat
     tty: true
