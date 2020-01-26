@@ -213,7 +213,17 @@ spec:
                 branch 'master'
             }
       steps {
-        sh 'ls'
+        container(name: 'alpine') {
+          sh 'export PATH=${PATH}:/root/.local/bin && \
+              export ENV=prod && \
+              aws eks --region us-east-1 update-kubeconfig --name emirates-dev-k8s-cluster && \
+              apk add gettext && \
+              envsubst < infra/app-deployment.tmpl > infra/app-deployment.yaml && \
+              envsubst < infra/app-service.tmpl > infra/app-service.yaml && \
+              kubectl apply -f infra/ -n production && \
+              kubectl rollout status deployment springboot-backend -n staging && \
+              sleep 20'
+        }
       }
     }
 
