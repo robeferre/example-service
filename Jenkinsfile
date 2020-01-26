@@ -104,7 +104,9 @@ spec:
               apk add gettext && \
               envsubst < infra/app-deployment.tmpl > infra/app-deployment.yaml && \
               envsubst < infra/app-service.tmpl > infra/app-service.yaml && \
-              kubectl apply -f infra/ -n development'
+              kubectl apply -f infra/ -n development && \
+              kubectl rollout status deployment springboot-backend -n development &&
+              sleep 10'
         }
       }
     }

@@ -4,11 +4,13 @@ metadata:
   name: springboot-backend
   labels:
     app: springboot-backend
+    env: ${ENV}
 spec:
   selector:
     matchLabels:
       app: springboot
       tier: backend
+      env: ${ENV}
   strategy:
     type: Recreate
   template:
@@ -16,6 +18,7 @@ spec:
       labels:
         app: springboot
         tier: backend
+        env: ${ENV}
     spec:
       containers:
         - image: robeferre/example-service:${GIT_COMMIT}
